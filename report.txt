@@ -20,3 +20,14 @@ ClaimNb = 1
 
 That implies they had a claim very quickly after the policy started → a high-risk profile.
 
+zero inflation
+
+right skewness
+
+variance vs mean
+
+over-dispersion
+
+why outliers should not be removed
+
+why exposure matters
