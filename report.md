@@ -160,3 +160,38 @@ A dominant peak occurs at exactly 1 year, reflecting standard annual contract te
 
 
 
+Area grouped by mean ClaimFreq
+
+The most risky area is F.
+
+Veh Brand grouped by mean ClaimFreq
+
+B12 is brand with the highest rate of claim freq.
+
+
+
+
+
+VehGas grouped by mean ClaimFreq
+
+Regular cars have drastically higher claim frequency. Diesel cars have just a few claims.
+
+Region grouped by mean ClaimFreq
+R21 - most
+
+
+
+
+
+Correlation between target and numerical values
+
+binning:
+
+Grouped analysis of key numerical variables reveals several meaningful risk patterns. Claim frequency is highest among young drivers and decreases sharply for middle-aged drivers. Vehicle age shows a mild increase in risk up to around 10 years, followed by a decline for older vehicles. Higher-power vehicles exhibit elevated risk, while the Bonus–Malus variable shows the strongest relationship: high-malus drivers have drastically higher and more volatile claim frequencies. Overall, the grouped trends indicate that driver characteristics and historical behaviour are strong predictors of future claims.
+
+
+Two-claim events:
+Two-claim events are extremely rare but highly informative.
+
+They occur almost exclusively among policies with long exposure periods, confirming that higher observation time naturally increases the chance of multiple claims. When normalized by exposure, the claim frequency for the 2+ claim group is several times higher than for 0- or 1-claim customers, highlighting a small but high-risk subsegment of the portfolio.
+
