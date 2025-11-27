@@ -190,8 +190,63 @@ binning:
 Grouped analysis of key numerical variables reveals several meaningful risk patterns. Claim frequency is highest among young drivers and decreases sharply for middle-aged drivers. Vehicle age shows a mild increase in risk up to around 10 years, followed by a decline for older vehicles. Higher-power vehicles exhibit elevated risk, while the Bonus–Malus variable shows the strongest relationship: high-malus drivers have drastically higher and more volatile claim frequencies. Overall, the grouped trends indicate that driver characteristics and historical behaviour are strong predictors of future claims.
 
 
+
 Two-claim events:
 Two-claim events are extremely rare but highly informative.
 
 They occur almost exclusively among policies with long exposure periods, confirming that higher observation time naturally increases the chance of multiple claims. When normalized by exposure, the claim frequency for the 2+ claim group is several times higher than for 0- or 1-claim customers, highlighting a small but high-risk subsegment of the portfolio.
+
+
+
+
+
+Because policies have different exposure times, I performed most exploratory analysis on claim frequency (ClaimNb / Exposure), which normalizes claims to a per-year rate. For modeling, I predict the number of claims (ClaimNb) while incorporating Exposure as an offset/sample weight so that longer policies have proportionally more influence
+
+
+
+
+
+
+
+**Models**
+
+
+
+Instead of predicting raw claim counts directly, I modeled claim frequency (claims per year) and used Exposure as a weight to properly scale each observation.
+
+This ensures that:
+
+
+
+policies active for a short time do not distort the model
+
+
+
+long-running policies contribute proportionally to the model
+
+
+
+
+
+
+
+
+
+
+
+Error Analysis \& Model Refinements
+
+
+
+The top 10 largest residuals all correspond to policies with extremely short exposure periods (e.g., 0.0027 or 0.01 years, which represent only a few days of coverage) but at least one reported claim. Because ClaimFreq is defined as ClaimNb / Exposure, even a single claim in such a short period produces very large annualized frequencies (e.g., 1 claim in 0.0027 years → ClaimFreq ≈ 366). These cases are statistical outliers and are poorly represented in the training data, so the model—which typically predicts reasonable frequencies (0.05–1.0)—cannot capture these extreme values. The largest residuals therefore reflect data extremes rather than systematic model errors.
+
+
+
+To address this, several refinements could be considered:
+
+(1) treating very short-exposure policies separately or excluding them from the main model,
+
+(2) capping or winsorizing extreme ClaimFreq values,
+
+
 
