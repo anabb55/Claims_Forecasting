@@ -58,5 +58,24 @@ Because ClaimFreq divides by Exposure, extremely small exposure values combined 
 
 ---
 
+### Outlier Detection
+
+An IQR-based approach was used to identify potential outliers in numeric variables. The summary shows that:
+
+* ClaimNb and VehPower each have around 5% flagged observations.
+* BonusMalus has roughly 9% outliers, reflecting variation in past driving behavior.
+* Density shows the highest proportion of potential outliers (≈11%), consistent with large differences between rural and urban areas.
+* No outliers were detected for Exposure, which behaves as expected under contractual rules.
+
+Outliers were kept in the dataset because many represent real high-risk situations.
+
+<img width="385" height="152" alt="image" src="https://github.com/user-attachments/assets/c39d1ad9-ce45-4a41-9e93-b7e3cd91260b" />
+
+
+---
+
+
+
+
 
 
