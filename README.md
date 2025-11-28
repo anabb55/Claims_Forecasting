@@ -93,7 +93,7 @@ Several plots were created to inspect marginal distributions:
 
 * **Exposure**: a histogram (log y-scale) shows that most policies have exposure around 1 year, with additional mass at 2 years (renewals) and a small share of very short or slightly longer contracts.
 * **Numeric features (DrivAge, VehAge, BonusMalus, Density)**: histograms highlight realistic age ranges, a wide spread of Bonus-Malus values, and a strongly skewed distribution for population density.
-* <img width="1177" height="783" alt="image" src="https://github.com/user-attachments/assets/e6a371a6-de7e-4ab6-bebb-4fc6dfa309c4" />
+ <img width="1177" height="783" alt="image" src="https://github.com/user-attachments/assets/e6a371a6-de7e-4ab6-bebb-4fc6dfa309c4" />
 
 
 These plots confirm that the data is highly skewed and that log scales are helpful for visual interpretation.
@@ -148,7 +148,7 @@ To explicitly highlight multi-claim behavior, a derived variable ClaimGroup was 
 * `0` = no claims
 * `1` = exactly one claim
 * `2` = two or more claims (2+)
-* 
+  
 <img width="621" height="456" alt="image" src="https://github.com/user-attachments/assets/7cdbd0a9-190e-4f52-a069-2ee9b42d95a8" />
 <img width="631" height="462" alt="image" src="https://github.com/user-attachments/assets/53524b77-929f-48aa-b662-364bb2371568" />
 <img width="976" height="747" alt="image" src="https://github.com/user-attachments/assets/47a404e6-2142-4f00-bbd1-7eec394f642a" />
