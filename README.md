@@ -137,25 +137,28 @@ For each binned feature, a point plot of **mean `ClaimFreq`** is shown. This hig
 
 ### 2.4 Correlations Between Numeric Variables
 
-A Spearman correlation heatmap was produced for the main numeric variables (`VehPower`, `VehAge`, `DrivAge`, `BonusMalus`, `Density`, `ClaimFreq`, `ClaimNb`, `Exposure`). While correlations are generally moderate, the heatmap helps confirm:
+A Spearman correlation heatmap was generated for the main numeric variables, but its usefulness is limited because ClaimNb is almost always zero. **For this reason, correlation analysis is not an ideal tool for understanding claim behavior, and inspecting specific claim groups provides far more insight.**
 
-* expected relationships between `ClaimNb` and `ClaimFreq`,
-* limited linear correlation between most features and the target, supporting the use of nonlinear models such as XGBoost.
+The only meaningful relationship observed is a negative correlation between DrivAge and BonusMalus, indicating that younger drivers tend to have worse Bonus-Malus scores.
 
 ### 2.5 Key Interactions: 0 vs 1 vs 2+ Claims
 
-To explicitly highlight multi-claim behavior, a derived variable `ClaimGroup` was created:
+To explicitly highlight multi-claim behavior, a derived variable ClaimGroup was created:
 
 * `0` = no claims
 * `1` = exactly one claim
 * `2` = two or more claims (2+)
+* 
+<img width="621" height="456" alt="image" src="https://github.com/user-attachments/assets/7cdbd0a9-190e-4f52-a069-2ee9b42d95a8" />
+<img width="631" height="462" alt="image" src="https://github.com/user-attachments/assets/53524b77-929f-48aa-b662-364bb2371568" />
+<img width="976" height="747" alt="image" src="https://github.com/user-attachments/assets/47a404e6-2142-4f00-bbd1-7eec394f642a" />
+
 
 Several visualizations were then used:
 
-* a countplot of `ClaimGroup` (log scale) to show how rare 2+ claim events are,
-* a boxplot of `Exposure` by `ClaimGroup` to compare policy durations for 0, 1, and 2+ claim groups,
-* a point plot of mean `ClaimFreq` by `ClaimGroup`, illustrating how frequency grows sharply for the 2+ segment,
-* a boxplot of `BonusMalus` by `ClaimGroup`, showing that policies with more claims are associated with worse Bonus-Malus scores.
+* a countplot of ClaimGroup to show how rare 2+ claim events are,
+* a point plot of mean ClaimFreq by ClaimGroup, illustrating how frequency grows sharply for the 2+ segment,
+* a boxplot of BonusMalus by ClaimGroup, showing that policies with more claims are associated with worse Bonus-Malus scores.
 
 These plots explicitly capture the interaction between claim counts, exposure, and past driving behavior, and they motivate the later modeling choices and error analysis.
 
