@@ -182,8 +182,6 @@ In addition to GLMs, a **tree-based XGBoost model** with a Poisson objective was
 * It is robust to skewed distributions and extreme values, which are common in ClaimFreq due to short exposure periods.
 
 ### 3.2 Preprocessing Pipeline
-<img width="230" height="190" alt="image" src="https://github.com/user-attachments/assets/b2e0996b-ff34-4d77-8f40-bac57ec4c6d8" />
-<img width="960" height="191" alt="image" src="https://github.com/user-attachments/assets/d81beebe-0d49-42c5-b266-ffd6b2568f2e" />
 
 All models use a unified scikit-learn `Pipeline` that combines:
 
@@ -204,7 +202,7 @@ Cross-validation was used throughout:
 * **5-fold CV** for Poisson and Tweedie
 * **3-fold CV** for XGBoost, chosen to reduce training time on a large dataset
 
-All models were trained using **sample weights = Exposure**, ensuring that longer-running policies contribute proportionally more to the loss function.
+All models were trained using **sample weights = Exposure**.
 <img width="1059" height="58" alt="image" src="https://github.com/user-attachments/assets/171677d1-f2ce-4f20-9493-c16e81a75ed2" />
 
 ### 3.4 Model Selection
@@ -217,6 +215,76 @@ The **XGBoost model** achieved the best predictive performance and was therefore
 It was retrained on the combined **train + validation** sets and evaluated once on the **test** set.
 
 ---
+
+## 4. Feature Importance
+
+The figure below shows the ten most important predictors:
+
+<img width="230" height="190" alt="image" src="https://github.com/user-attachments/assets/b2e0996b-ff34-4d77-8f40-bac57ec4c6d8" />
+
+Key insights:
+
+* **VehGas_Regular** – Regular-fuel vehicles show the highest risk. This matches the EDA results, where Regular engines consistently had higher average claim frequency than Diesel.
+* **VehAge** – Older vehicles tend to produce more claims, likely due to wear, outdated safety features, or poorer vehicle condition.
+* **VehBrand_B12** – This brand group stands out as a high-risk segment, confirming the patterns seen in the grouped bar plots.
+* **BonusMalus** – Higher Bonus-Malus scores correspond to worse driving history. Drivers with a poor record naturally show higher claim frequency.
+* **VehGas_Diesel** – Diesel appears in the top features, but with a smaller impact than Regular, which aligns with its lower observed risk.
+* **VehPower** – More powerful vehicles contribute to higher risk, and the model uses this signal effectively.
+* **DrivAge** – Younger drivers have noticeably higher claim frequencies.
+* **Regional indicators (R91)** – Location matters, reflecting differences in traffic density, road conditions, and local driving patterns.
+
+### 4.1 Business Interpretation
+
+The importance ranking aligns well with real-world insurance logic:
+
+* **Driver history and behavior** (Bonus-Malus) strongly influence future claims.
+* **Vehicle characteristics** (age, power, brand, fuel type) explain a large share of risk variation.
+* **Regional factors** capture environmental and traffic-related differences.
+* **Fuel type** emerges as a meaningful segment: Regular-fuel vehicles repeatedly show higher risk.
+  
+---
+
+## 5. Error Analysis and Model Refinements
+
+I reviewed the ten largest residuals to understand where the model performs poorly. All high-error cases follow the same pattern:
+
+* the policy has very short exposure (often only a few days),
+* the policy has at least one claim,
+* dividing by such a small exposure produces extremely large ClaimFreq values.
+
+The model cannot predict these extreme values well because they are rare and behave differently from normal-year policies. These points act as statistical outliers, not true model mistakes.
+<img width="960" height="191" alt="image" src="https://github.com/user-attachments/assets/d81beebe-0d49-42c5-b266-ffd6b2568f2e" />
+
+### Key Observations
+
+* Every large residual appears in rows with **Exposure < 0.01**.
+* ClaimFreq becomes extremely high due to the formula, not because the driver is unusually risky.
+* The model consistently predicts reasonable values, while the targets are inflated because of the tiny denominator.
+
+### Suggested Refinements
+
+To improve performance and stability, I recommend:
+
+1. Add a flag for short exposure (Exposure < 0.1).
+2. Cap extreme ClaimFreq values.
+3. Use a separate model for very short-exposure policies.
+4. Increase regularization in XGBoost to reduce sensitivity to extreme points.
+
+---
+
+## 6. Business Interpretation and Recommendations
+
+From a business perspective, these extreme errors highlight **short-term or irregular policy behavior**, not true high-risk customers.
+
+### Recommendations
+
+* Review policies with very short exposure to understand why they end so quickly.
+* Apply special pricing rules or minimum premiums for short-duration contracts.
+* Check whether short-exposure policies connect to churn.
+
+
+
+
 
 
 
