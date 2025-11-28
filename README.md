@@ -160,7 +160,65 @@ Several visualizations were then used:
 * a point plot of mean ClaimFreq by ClaimGroup, illustrating how frequency grows sharply for the 2+ segment,
 * a boxplot of BonusMalus by ClaimGroup, showing that policies with more claims are associated with worse Bonus-Malus scores.
 
-These plots explicitly capture the interaction between claim counts, exposure, and past driving behavior, and they motivate the later modeling choices and error analysis.
+Two-claim events are extremely rare but highly informative.
+---
+
+## 3. Modeling Algorithms and Hyperparameter Tuning
+
+The modeling stage includes both **GLM-type models** and a **tree-based nonlinear model**. Instead of predicting raw claim counts directly, I modeled claim frequency (claims per year) and used Exposure as a weight to properly scale each observation.
+
+### 3.1 Modeling Approaches
+
+Two GLM models were implemented:
+
+* **Poisson Regression** – a natural choice for modeling count and frequency data with a log link and non-negative predictions.
+* **Tweedie Regression** – a flexible GLM suited for insurance data, as it handles zero-inflation and heavy-tailed target distributions more effectively than a standard linear model.
+
+In addition to GLMs, a **tree-based XGBoost model** with a Poisson objective was trained:
+
+* It can capture nonlinear relationships and complex interactions between driver, vehicle, and geographic features.
+* It handles mixed data types well when combined with proper preprocessing (one-hot encoding + scaling).
+* It is robust to skewed distributions and extreme values, which are common in ClaimFreq due to short exposure periods.
+
+### 3.2 Preprocessing Pipeline
+<img width="230" height="190" alt="image" src="https://github.com/user-attachments/assets/b2e0996b-ff34-4d77-8f40-bac57ec4c6d8" />
+<img width="960" height="191" alt="image" src="https://github.com/user-attachments/assets/d81beebe-0d49-42c5-b266-ffd6b2568f2e" />
+
+All models use a unified scikit-learn `Pipeline` that combines:
+
+* `OneHotEncoder` for categorical variables,
+* `StandardScaler` for numeric variables,
+* the selected model (Poisson, Tweedie, or XGBoost) as the final step.
+
+### 3.3 Hyperparameter Tuning Strategy
+
+Hyperparameter tuning was conducted using **GridSearchCV**. Each model was tuned over a focused set of parameters:
+
+* **Poisson Regression**: regularization strength (`alpha`)
+* **Tweedie Regression**: `power` and `alpha`
+* **XGBoost**: tree depth, learning rate, number of estimators, subsampling, and feature sampling rate
+
+Cross-validation was used throughout:
+
+* **5-fold CV** for Poisson and Tweedie
+* **3-fold CV** for XGBoost, chosen to reduce training time on a large dataset
+
+All models were trained using **sample weights = Exposure**, ensuring that longer-running policies contribute proportionally more to the loss function.
+<img width="1059" height="58" alt="image" src="https://github.com/user-attachments/assets/171677d1-f2ce-4f20-9493-c16e81a75ed2" />
+
+### 3.4 Model Selection
+
+After tuning, all three models were evaluated on a held-out validation set.
+The **XGBoost model** achieved the best predictive performance and was therefore selected as the final model.
+
+<img width="239" height="295" alt="image" src="https://github.com/user-attachments/assets/47470705-9570-4a70-8471-c46d24122533" />
+
+It was retrained on the combined **train + validation** sets and evaluated once on the **test** set.
+
+---
+
+
+
 
 
 
