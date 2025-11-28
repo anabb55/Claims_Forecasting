@@ -88,10 +88,13 @@ Several plots were created to inspect marginal distributions:
 * **ClaimFreq**: a histogram of a capped version of ClaimFreq (top 1% clipped, log x-scale) shows that most policies have frequencies extremely close to zero, while very high frequencies are rare and mainly driven by short exposures with at least one claim.
 
 
- * **ClaimFreq by ClaimNb (boxplot)**: a boxplot of claim frequency grouped by claim count (restricted to non-zero values) shows that, for the same number of claims, shorter exposure periods lead to much higher annualized frequencies, resulting in wide variability within each claim group.
+ * **ClaimFreq by ClaimNb (boxplot)**: a boxplot of claim frequency grouped by claim count shows that, for the same number of claims, shorter exposure periods lead to much higher annualized frequencies.
+  <img width="962" height="766" alt="image" src="https://github.com/user-attachments/assets/c4ef1503-282d-4457-93b5-60f2fefd8d3d" />
 
 * **Exposure**: a histogram (log y-scale) shows that most policies have exposure around 1 year, with additional mass at 2 years (renewals) and a small share of very short or slightly longer contracts.
-* **Numeric features (`DrivAge`, `VehAge`, `BonusMalus`, `Density`)**: histograms highlight realistic age ranges, a wide spread of Bonus-Malus values, and a strongly skewed distribution for population density.
+* **Numeric features (DrivAge, VehAge, BonusMalus, Density)**: histograms highlight realistic age ranges, a wide spread of Bonus-Malus values, and a strongly skewed distribution for population density.
+* <img width="1177" height="783" alt="image" src="https://github.com/user-attachments/assets/e6a371a6-de7e-4ab6-bebb-4fc6dfa309c4" />
+
 
 These plots confirm that the data is highly skewed and that log scales are helpful for visual interpretation.
 
@@ -104,29 +107,32 @@ To explore how claim frequency varies across categories, bar plots of **mean `Cl
 * `VehGas`
 * `Region`
 
-For each feature, the dataset is grouped by the category and the average `ClaimFreq` is plotted (often on a log scale). This reveals:
+  <img width="932" height="742" alt="image" src="https://github.com/user-attachments/assets/82a5c637-66a5-41c3-9a7e-de99e714d0c2" />
+  <img width="957" height="756" alt="image" src="https://github.com/user-attachments/assets/601f6adc-599a-4370-8a84-fc2e27609f03" />
 
-* systematic differences in risk between regions and areas,
-* distinct patterns across vehicle brands,
-* noticeable differences between fuel types (Regular vs Diesel).
+
+
+For each feature, the dataset is grouped by the category and the average ClaimFreq is plotted. This reveals:
+
+* systematic differences in risk between regions and areas, with Area F showing the highest average claim frequency,
+* distinct patterns across vehicle brands, with VehBrand B12 standing out as one of the highest-risk categories,
+* noticeable differences between fuel types, where Regular-fuel vehicles exhibit significantly higher risk compared to Diesel.
 
 These group comparisons provide a first view of which categorical segments carry higher average risk.
 
 ### 2.3 Target vs. Binned Numeric Features
 
-To better understand nonlinear relationships, key numeric variables were binned and compared to `ClaimFreq`:
+To better understand nonlinear relationships, key numeric variables were binned and compared to ClaimFreq.
+<img width="960" height="600" alt="image" src="https://github.com/user-attachments/assets/fe24db8e-17d6-47fd-9894-2fd382f419be" />
+<img width="945" height="750" alt="image" src="https://github.com/user-attachments/assets/6aa0074a-23e0-4277-aee9-2ac629577611" />
+<img width="968" height="753" alt="image" src="https://github.com/user-attachments/assets/c635cb23-7ce4-4862-8643-316051403393" />
 
-* `DrivAge` binned into age groups (e.g., 18–25, 25–35, …)
-* `VehAge` binned into age bands
-* `VehPower` binned into power ranges
-* `BonusMalus` binned into score ranges
-* `Density` split into deciles
 
-For each binned feature, a point plot of **mean `ClaimFreq`** is shown (log scale on the y-axis). This highlights, for example:
+For each binned feature, a point plot of **mean `ClaimFreq`** is shown. This highlights, for example:
 
-* increased claim frequency for certain driver age groups,
-* higher risk for specific vehicle ages and power ranges,
-* a clear relationship between Bonus-Malus segments and observed frequency,
+* increased claim frequency among younger drivers, with the 18–25 age group showing the highest risk,
+* higher risk for specific vehicle power ranges, where the 9–12 power group stands out as the riskiest segment, while the 12–20 range contains relatively few vehicles, causing its average risk to fluctuate more due to limited sample size,
+* a strong relationship between Bonus-Malus groups and claim frequency, where lower bands show low risk, while higher bands exhibit a sharp increase in average frequency, consistent with worse prior driving behavior
 * differences in frequency across density deciles.
 
 ### 2.4 Correlations Between Numeric Variables
