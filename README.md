@@ -9,9 +9,9 @@ The goal is not only to achieve good predictive performance, but also to provide
 
 The dataset is loaded, cleaned, and enriched using the following steps:
 
-- load_data – reads the raw CSV file.  
-- basic_clean – handles type conversions, sanity checks, and removal of invalid records.  
-- add_claim_freq – computes the target variable:  
+- load_data - reads the raw CSV file.  
+- basic_clean - handles type conversions, sanity checks, and removal of invalid records.  
+- add_claim_freq - computes the target variable:  
   **ClaimFreq = ClaimNb / Exposure**.
 
 The modeling dataset includes:
