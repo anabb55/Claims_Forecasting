@@ -161,6 +161,7 @@ Several visualizations were then used:
 * a boxplot of BonusMalus by ClaimGroup, showing that policies with more claims are associated with worse Bonus-Malus scores.
 
 Two-claim events are extremely rare but highly informative.
+
 ---
 
 ## 3. Modeling Algorithms and Hyperparameter Tuning
