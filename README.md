@@ -92,7 +92,7 @@ Several plots were created to inspect marginal distributions:
   <img width="962" height="766" alt="image" src="https://github.com/user-attachments/assets/c4ef1503-282d-4457-93b5-60f2fefd8d3d" />
 
 * **Exposure**: a histogram (log y-scale) shows that most policies have exposure around 1 year, with additional mass at 2 years (renewals) and a small share of very short or slightly longer contracts.
-* **Numeric features (DrivAge, VehAge, BonusMalus, Density)**: histograms highlight realistic age ranges, a wide spread of Bonus-Malus values, and a strongly skewed distribution for population density.
+* **Numeric features (DrivAge, VehAge, BonusMalus, Density)**: histograms highlight realistic age ranges, a heavily right-skewed Bonus–Malus distribution concentrated around low values, and a strongly skewed distribution for population density.
  <img width="1177" height="783" alt="image" src="https://github.com/user-attachments/assets/e6a371a6-de7e-4ab6-bebb-4fc6dfa309c4" />
 
 
